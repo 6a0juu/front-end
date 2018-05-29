@@ -46,12 +46,14 @@
                     // success
                     console.log(res)
                     if (res.status == 200) {
+                    this.$message.error("登陆成功")
                         localStorage.setItem('ms_username', this.ruleForm.username);
                         localStorage.setItem('tstToken', res.data.meta.token);
                         this.$router.push('/');
                     }
                 }, (error) => {
                     // error
+                    this.$message.error("用户名或密码错误")
                     console.log(error)
                 });
             }

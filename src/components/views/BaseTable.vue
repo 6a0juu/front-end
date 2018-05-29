@@ -16,52 +16,49 @@
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="tableData" stripe style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" stripe style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="date" label="日期" width="180"></el-table-column>
-                <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter"></el-table-column>
-                <el-table-column label="操作" width="180">
+                <el-table-column prop="sid" label="学号" sortable width="180"></el-table-column>
+                <el-table-column prop="name" label="姓名" sortable width="100"> </el-table-column>
+                <el-table-column prop="email" label="电子邮件" sortable width="180"></el-table-column>
+                <el-table-column prop="tel" label="电话" sortable width="150"> </el-table-column>
+                <el-table-column label="操作" width="200">
                     <template slot-scope="scope">
                         <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-                <!--
-                <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
-                </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
-                </el-table-column>
-                <el-table-column label="操作" width="180">
-                    <template slot-scope="scope">
-                        <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-                -->
             <div class="pagination">
-                <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination 
+                    @current-change="handleCurrentChange" 
+                    :current-page="currentPage" 
+                    layout="total, prev, pager, next, jumper"
+                    :page-size="pagesize"
+                    :total="tableData.length">
                 </el-pagination>
             </div>
         </div>
 
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-form-item label="学号">
+                    <el-input v-model="form.sid"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="电子邮件">
+                    <el-input v-model="form.email"></el-input>
                 </el-form-item>
-
+                <el-form-item label="电话">
+                    <el-input v-model="form.tel"></el-input>
+                </el-form-item>
+                <el-form-item label="原学号">
+                    <el-input v-model="form.orisid" :disabled="true"></el-input>
+                </el-form-item>
+                <dir></dir>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -84,25 +81,16 @@
     export default {
         data() {
             return {
-                url: 'vuetable.json',
+                
+                currentPage:1,
+                pagesize:10,
+                url: '',
                 tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
+                    email: '10123214924@qq.com',
+                    name: 'orz',
+                    sid: '2014233310312',
+                    tel: '12345678901'
                 }],
-                cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -121,7 +109,7 @@
         created() {
 
             // 切换到该页面时的执行函数
-            //this.getData();
+            this.getData();
         },
         computed: {
             data() {
@@ -145,28 +133,16 @@
             }
         },
         methods: {
-            // 分页导航
-            handleCurrentChange(val) {
-                this.cur_page = val;
-                this.getData();
+
+            handleCurrentChange: function(currentPage){
+                this.currentPage = currentPage;
             },
-            // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                /*
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                */
-               /*
-                this.url = './vuetable.json';
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
-                    console.log(tableData)
+                this.url = 'http://localhost:19845/api/all';
+                this.$axios.get(this.url).then((res) => {
+                    this.tableData = res.data;
+                    //console.log(res)
                 })
-                */
             },
             search() {
                 this.is_search = true;
@@ -181,9 +157,11 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
+                    sid: item.sid,
                     name: item.name,
-                    date: item.date,
-                    address: item.address
+                    email: item.email,
+                    tel: item.tel,
+                    orisid: item.sid
                 }
                 this.editVisible = true;
             },
@@ -206,15 +184,38 @@
             },
             // 保存编辑
             saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                this.url = 'http://localhost:19845/api/item';
+                this.$axios.put(this.url, {
+                    SID: this.form.sid,
+                    Name: this.form.name,
+                    Email: this.form.email,
+                    Tel: this.form.tel,
+                    OriSID: this.form.orisid
+                }).then((res) => {
+                    this.$set(this.tableData, this.idx, this.form);
+                    this.editVisible = false;
+                    this.$message.success(`修改成功`);
+                }, (err) => {
+                    this.$message.error(`修改失败`);
+                });
+                
             },
             // 确定删除
             deleteRow(){
-                this.tableData.splice(this.idx, 1);
-                this.$message.success('删除成功');
-                this.delVisible = false;
+                this.url = 'http://localhost:19845/api/itemdel';
+                console.log(this.tableData[this.idx].sid)
+                this.$axios.put(this.url, {
+                    SID: this.tableData[this.idx].sid,
+                    Name: this.tableData[this.idx].name,
+                    Email: this.tableData[this.idx].email,
+                    Tel: this.tableData[this.idx].tel
+                }).then((res) => {
+                    this.tableData.splice(this.idx, 1);
+                    this.$message.success('删除成功');
+                    this.delVisible = false;
+                }, (err) => {
+                    this.$message.error(`删除失败`);
+                });
             }
         }
     }
