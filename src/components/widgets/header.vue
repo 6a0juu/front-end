@@ -6,22 +6,35 @@
                 <!-- 用户头像 -->
                 <div class="user-avator"><img src="../../assets/logo.png"></div>
                 <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <el-dropdown class="user-name" @command="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <a href="https://github.com/" target="_blank">
-                            <el-dropdown-item>关于作者</el-dropdown-item>
-                        </a>
-                        <a href="https://github.com/" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
+                        <el-dropdown-item  command="edtuser">修改信息</el-dropdown-item>
+                        <el-dropdown-item  command="about">关于作者</el-dropdown-item>
                         <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
         </div>
+        <!--
+        <el-dialog title="用户信息编辑" :visible.sync="edtVisible" width="30%">
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-form-item label="用户名">
+                    <el-input v-model="form.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="form.password"></el-input>
+                </el-form-item>
+                <dir></dir>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="edtVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveEdt">确 定</el-button>
+            </span>
+        </el-dialog>
+        -->
     </div>
 </template>
 <script>
@@ -29,6 +42,8 @@
         
         data() {
             return {
+                aboutVisible: false,
+                edtVisible: false,
                 name: 'butTst',
                 message: 2
             }
@@ -46,8 +61,26 @@
                     localStorage.removeItem('ms_username')
                     localStorage.removeItem('tstToken')
                     this.$router.push('/login');
+                } else if(command == "edtuser"){
+                    //
+                } else if(command == "about"){
+
                 }
+            },
+            saveEdt(){
+                this.url = 'http://localhost:19845/api/user';
+                this.$axios.put(this.url, {
+                    Username: this.form.username,
+                    Password: this.form.password
+                }).then((res) => {
+                    this.$set(this.tableData, this.idx, this.form);
+                    this.edtVisible = false;
+                    this.$message.success(`修改成功`);
+                }, (err) => {
+                    this.$message.error(`修改失败`);
+                });
             }
+
         }
         
     }
@@ -126,4 +159,21 @@
     .el-dropdown-menu__item{
         text-align: center;
     }
+
+    .handle-box {
+        margin-bottom: 20px;
+    }
+    .handle-select {
+        width: 120px;
+    }
+    .handle-input {
+        width: 180px;
+        display: inline-block;
+    }
+    .del-dialog-cnt{
+        font-size: 16px;
+        text-align: center
+    }
+
+
 </style>

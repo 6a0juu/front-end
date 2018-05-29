@@ -17,7 +17,17 @@ export default new Router({
                 {
                     path: '/table',
                     component: resolve => require(['../components/views/BaseTable.vue'], resolve),
-                    meta: { title: '基础表格' }
+                    meta: { title: '数据表格' }
+                },
+                {
+                    path: '/upload',
+                    component: resolve => require(['../components/views/Upload.vue'], resolve),
+                    meta: { title: '批量导入' }
+                },
+                {
+                    path: '/usertable',
+                    component: resolve => require(['../components/views/UserTable.vue'], resolve),
+                    meta: { title: '用户表格', permission: true }
                 }
             ]
             

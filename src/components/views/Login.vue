@@ -3,6 +3,14 @@
         <div class="ms-title">后台管理系统</div>
         <div class="ms-login">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
+                
+                <el-radio-group v-model="radio3">
+                    <div class="sign-inup">
+                    <el-radio-button label="登陆"></el-radio-button>
+                    <el-radio-button label="注册"></el-radio-button>
+                    </div>
+                </el-radio-group>
+                <span style="line-height:18px;"></span>
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username"></el-input>
                 </el-form-item>
@@ -12,7 +20,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
+                <p style="font-size:12px;line-height:30px;color:#999;">Tips: 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
@@ -22,6 +30,7 @@
     export default {
         data: function(){
             return {
+                radio3: '登陆',
                 ruleForm: {
                     username: '',
                     password: ''
@@ -38,24 +47,39 @@
         },
         methods: {
             submitForm(ruleForm) {
-
-                this.$axios.post('http://localhost:19845/api/login', {
-                    Usnm: this.ruleForm.username,
-                    Pswd: this.ruleForm.password
-                }).then((res) => {
-                    // success
-                    console.log(res)
-                    if (res.status == 200) {
-                    this.$message.error("登陆成功")
-                        localStorage.setItem('ms_username', this.ruleForm.username);
-                        localStorage.setItem('tstToken', res.data.meta.token);
-                        this.$router.push('/');
-                    }
-                }, (error) => {
-                    // error
-                    this.$message.error("用户名或密码错误")
-                    console.log(error)
-                });
+                if (this.radio3 == '登陆') {
+                    this.$axios.post('http://localhost:19845/api/login', {
+                        Usnm: this.ruleForm.username,
+                        Pswd: this.ruleForm.password
+                    }).then((res) => {
+                        // success
+                        console.log(res)
+                        if (res.status == 200) {
+                            this.$message.success("登陆成功")
+                            localStorage.setItem('ms_username', this.ruleForm.username);
+                            localStorage.setItem('tstToken', res.data.meta.token);
+                            this.$router.push('/');
+                        }
+                    }, (error) => {
+                        // error
+                        this.$message.error("用户名或密码错误")
+                        console.log(error)
+                    });
+                } else if (this.radio3 == '注册') {
+                    this.$axios.post('http://localhost:19845/api/user', {
+                        Usnm: this.ruleForm.username,
+                        Pswd: this.ruleForm.password
+                    }).then((res) => {
+                        // success
+                        console.log(res)
+                        this.$message.success("注册成功")
+                    }, (error) => {
+                        // error
+                        this.$message.error("注册失败")
+                        console.log(error)
+                    });
+                }
+                
             }
         }
     }
@@ -77,12 +101,18 @@
         color: #fff;
 
     }
+    .sign-inup{
+        width: 300px; 
+        margin-bottom: 20px;
+        text-align: center;
+        align-self: center;
+    }
     .ms-login{
         position: absolute;
         left:50%;
         top:50%;
         width:300px;
-        height:160px;
+        height:200px;
         margin:-150px 0 0 -190px;
         padding:40px;
         border-radius: 5px;

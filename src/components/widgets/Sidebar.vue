@@ -31,8 +31,8 @@
                     {
                         icon: 'el-icon-tickets',
                         index: 'table',
-                        title: '基础表格'
-                    }/*,
+                        title: '数据表格'
+                    },
                     {
                         icon: 'el-icon-date',
                         index: '3',
@@ -40,10 +40,19 @@
                         subs: [
                             {
                                 index: 'upload',
-                                title: '文件上传'
+                                title: '批量导入'
+                            },
+                            {
+                                index: 'download',
+                                title: '批量导出'
                             }
                         ]
-                    }*/
+                    },
+                    {
+                        icon: 'el-icon-warning',
+                        index: 'usertable',
+                        title: '用户表格'
+                    }
                 ]
             }
         },
