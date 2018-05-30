@@ -62,7 +62,7 @@
                     localStorage.removeItem('tstToken')
                     this.$router.push('/login');
                 } else if(command == "edtuser"){
-                    //
+                    //this.$router.push('/');
                 } else if(command == "about"){
 
                 }

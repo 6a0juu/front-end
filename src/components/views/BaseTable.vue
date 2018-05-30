@@ -129,9 +129,10 @@
                 delVisible: false,
                 addVisible: false,
                 form: {
+                    email: '',
                     name: '',
-                    date: '',
-                    address: ''
+                    sid: '',
+                    tel: ''
                 },
                 idx: -1
             }
@@ -143,23 +144,7 @@
         },
         computed: {
             data() {
-                return this.tableData/*.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })*/
+                return this.tableData
             }
         },
         methods: {

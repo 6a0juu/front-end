@@ -11,20 +11,11 @@
                 <el-button type="primary" icon="delete" class="handle-del mr10" @click="handleAdd">新增条目</el-button>
                 <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
             </div>
-            <div class="handle-box">
-                <el-input v-model="select_sid" placeholder="筛选学号" class="handle-input mr10"></el-input>
-                <el-input v-model="select_name" placeholder="筛选姓名" class="handle-input mr10"></el-input>
-                <el-input v-model="select_email" placeholder="筛选电子邮件" class="handle-input mr10"></el-input>
-                <el-input v-model="select_tel" placeholder="筛选电话" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="search" @click="search">搜索</el-button>
-            </div>
             <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" stripe style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="sid" label="学号" sortable width="180"></el-table-column>
-                <el-table-column prop="name" label="姓名" sortable width="100"> </el-table-column>
-                <el-table-column prop="email" label="电子邮件" sortable width="180"></el-table-column>
-                <el-table-column prop="tel" label="电话" sortable width="150"> </el-table-column>
-                <el-table-column label="操作" width="200">
+                <el-table-column prop="usnm" label="用户名" sortable width="200"></el-table-column>
+                <el-table-column prop="pswd" label="密码" sortable width="200"> </el-table-column>
+                <el-table-column label="操作" width="250">
                     <template slot-scope="scope">
                         <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -45,17 +36,11 @@
         <!-- 新增弹出框 -->
         <el-dialog title="新增" :visible.sync="addVisible" width="30%">
             <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="学号">
-                    <el-input v-model="form.sid"></el-input>
+                <el-form-item label="用户名">
+                    <el-input v-model="form.usnm"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="电子邮件">
-                    <el-input v-model="form.email"></el-input>
-                </el-form-item>
-                <el-form-item label="电话">
-                    <el-input v-model="form.tel"></el-input>
+                <el-form-item label="密码">
+                    <el-input v-model="form.pswd"></el-input>
                 </el-form-item>
                 <dir></dir>
             </el-form>
@@ -69,20 +54,11 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="学号">
-                    <el-input v-model="form.sid"></el-input>
+                <el-form-item label="用户名">
+                    <el-input v-model="form.usnm" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="电子邮件">
-                    <el-input v-model="form.email"></el-input>
-                </el-form-item>
-                <el-form-item label="电话">
-                    <el-input v-model="form.tel"></el-input>
-                </el-form-item>
-                <el-form-item label="原学号">
-                    <el-input v-model="form.orisid" :disabled="true"></el-input>
+                <el-form-item label="密码">
+                    <el-input v-model="form.pswd"></el-input>
                 </el-form-item>
                 <dir></dir>
             </el-form>
@@ -112,10 +88,8 @@
                 pagesize:10,
                 url: '',
                 tableData: [{
-                    email: '10123214924@qq.com',
-                    name: 'orz',
-                    sid: '2014233310312',
-                    tel: '12345678901'
+                    usnm: 'qwq',
+                    pswd: 'qwq'
                 }],
                 multipleSelection: [],
                 select_cate: '',
@@ -129,9 +103,8 @@
                 delVisible: false,
                 addVisible: false,
                 form: {
-                    name: '',
-                    date: '',
-                    address: ''
+                    usnm: '',
+                    pswd: ''
                 },
                 idx: -1
             }
@@ -143,23 +116,7 @@
         },
         computed: {
             data() {
-                return this.tableData/*.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })*/
+                return this.tableData
             }
         },
         methods: {
@@ -168,32 +125,10 @@
                 this.currentPage = currentPage;
             },
             getData() {
-                this.url = 'http://localhost:19845/api/all';
+                this.url = 'http://localhost:19845/api/user';
                 this.$axios.get(this.url).then((res) => {
                     this.tableData = res.data;
-                    //console.log(res)
                 })
-            },
-            search() {
-                this.is_search = true;
-                this.url = 'http://localhost:19845/api/form';
-                this.$axios.post(this.url, {
-                    SID: this.select_sid,
-                    Name: this.select_name,
-                    Email: this.select_email,
-                    Tel: this.select_tel,
-                }).then((res) => {
-                    //console.log(res.data)
-                    if (res.data == null) {
-                        this.$message.error(`搜索失败`);
-                    } else {
-                        this.tableData = res.data;
-                        this.$message.success(`搜索成功`);
-                    }
-                    
-                }, (err) => {
-                    this.$message.error(`搜索失败`);
-                });
             },
             formatter(row, column) {
                 return row.address;
@@ -205,11 +140,8 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
-                    sid: item.sid,
-                    name: item.name,
-                    email: item.email,
-                    tel: item.tel,
-                    orisid: item.sid
+                    usnm: item.usnm,
+                    pswd: item.pswd
                 }
                 this.editVisible = true;
             },
@@ -233,13 +165,10 @@
             },
             // 保存编辑
             saveEdit() {
-                this.url = 'http://localhost:19845/api/item';
+                this.url = 'http://localhost:19845/api/user';
                 this.$axios.put(this.url, {
-                    SID: this.form.sid,
-                    Name: this.form.name,
-                    Email: this.form.email,
-                    Tel: this.form.tel,
-                    OriSID: this.form.orisid
+                    Usnm: this.form.usnm,
+                    Pswd: this.form.pswd
                 }).then((res) => {
                     this.$set(this.tableData, this.idx, this.form);
                     this.editVisible = false;
@@ -251,14 +180,8 @@
             },
             // 确定删除
             deleteRow(){
-                this.url = 'http://localhost:19845/api/itemdel';
-                console.log(this.tableData[this.idx].sid)
-                this.$axios.put(this.url, {
-                    SID: this.tableData[this.idx].sid,
-                    Name: this.tableData[this.idx].name,
-                    Email: this.tableData[this.idx].email,
-                    Tel: this.tableData[this.idx].tel
-                }).then((res) => {
+                this.url = 'http://localhost:19845/api/user';
+                this.$axios.delete(this.url + '?Usnm=' + this.this.tableData[this.idx].usnm).then((res) => {
                     this.tableData.splice(this.idx, 1);
                     this.$message.success('删除成功');
                     this.delVisible = false;
@@ -271,12 +194,10 @@
                 this.addVisible = true;
             },
             addOne(){
-                this.url = 'http://localhost:19845/api/item';
+                this.url = 'http://localhost:19845/api/user';
                 this.$axios.post(this.url, {
-                    SID: this.form.sid,
-                    Name: this.form.name,
-                    Email: this.form.email,
-                    Tel: parseInt(this.form.tel)
+                    Usnm: this.form.usnm,
+                    Pswd: this.form.pswd
                 }).then((res) => {
                     this.tableData.push(this.form)
                     this.addVisible = false;
