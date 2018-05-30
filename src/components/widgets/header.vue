@@ -18,23 +18,6 @@
                 </el-dropdown>
             </div>
         </div>
-        <!--
-        <el-dialog title="用户信息编辑" :visible.sync="edtVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="100px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码">
-                    <el-input v-model="form.password"></el-input>
-                </el-form-item>
-                <dir></dir>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="edtVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdt">确 定</el-button>
-            </span>
-        </el-dialog>
-        -->
     </div>
 </template>
 <script>
@@ -62,23 +45,10 @@
                     localStorage.removeItem('tstToken')
                     this.$router.push('/login');
                 } else if(command == "edtuser"){
-                    //this.$router.push('/');
+                    this.$router.push('/useredt');
                 } else if(command == "about"){
-
+                    //this.$router.push('/about');
                 }
-            },
-            saveEdt(){
-                this.url = 'http://localhost:19845/api/user';
-                this.$axios.put(this.url, {
-                    Username: this.form.username,
-                    Password: this.form.password
-                }).then((res) => {
-                    this.$set(this.tableData, this.idx, this.form);
-                    this.edtVisible = false;
-                    this.$message.success(`修改成功`);
-                }, (err) => {
-                    this.$message.error(`修改失败`);
-                });
             }
 
         }

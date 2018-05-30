@@ -205,12 +205,24 @@
             delAll() {
                 const length = this.multipleSelection.length;
                 let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
+                //this.del_list = this.del_list.concat(this.multipleSelection);//这里加入删除表
                 for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                    console.log()
+                    this.url = 'http://localhost:19845/api/itemdel';
+                    //console.log(this.tableData[this.idx])
+                    this.$axios.put(this.url, {
+                        SID: this.multipleSelection[i].sid,
+                        Name: this.multipleSelection[i].name,
+                        Email: this.multipleSelection[i].email,
+                        Tel: this.multipleSelection[i].tel
+                    }).then((res) => {
+                        this.tableData.splice(this.idx, 1);
+                        this.$message.success('删除成功');
+                        this.delVisible = false;
+                    }, (err) => {
+                        this.$message.error('删除失败');
+                    });
                 }
-                this.$message.error('删除了' + str);
+                this.$message.success('删除了' + length + '条');
                 this.multipleSelection = [];
             },
             handleSelectionChange(val) {
@@ -237,7 +249,7 @@
             // 确定删除
             deleteRow(){
                 this.url = 'http://localhost:19845/api/itemdel';
-                console.log(this.tableData[this.idx].sid)
+                console.log(this.tableData[this.idx])
                 this.$axios.put(this.url, {
                     SID: this.tableData[this.idx].sid,
                     Name: this.tableData[this.idx].name,

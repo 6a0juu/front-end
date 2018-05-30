@@ -25,9 +25,19 @@ export default new Router({
                     meta: { title: '批量导入' }
                 },
                 {
+                    path: '/download',
+                    component: resolve => require(['../components/views/Download.vue'], resolve),
+                    meta: { title: '批量导出' }
+                },
+                {
                     path: '/usertable',
                     component: resolve => require(['../components/views/UserTable.vue'], resolve),
                     meta: { title: '用户表格', permission: true }
+                },
+                {
+                    path: '/useredt',
+                    component: resolve => require(['../components/views/UserEdt.vue'], resolve),
+                    meta: { title: '用户信息修改'}
                 }
             ]
             

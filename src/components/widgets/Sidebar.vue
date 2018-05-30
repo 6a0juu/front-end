@@ -36,7 +36,7 @@
                     {
                         icon: 'el-icon-date',
                         index: '3',
-                        title: '表单相关',
+                        title: '批量操作',
                         subs: [
                             {
                                 index: 'upload',
