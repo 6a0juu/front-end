@@ -153,7 +153,7 @@
                 this.currentPage = currentPage;
             },
             getData() {
-                this.url = 'https://sims-demo/api/all';
+                this.url = 'https://sims-demo.me/api/all';
                 this.$axios.get(this.url).then((res) => {
                     if (Math.random() > 0.5) {
                         this.tableData = res.data.splice(1,5)
@@ -166,7 +166,7 @@
             },
             search() {
                 this.is_search = true;
-                this.url = 'https://sims-demo/api/form';
+                this.url = 'https://sims-demo.me/api/form';
                 this.$axios.post(this.url, {
                     SID: this.select_sid,
                     Name: this.select_name,
