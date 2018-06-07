@@ -38,6 +38,11 @@ export default new Router({
                     path: '/useredt',
                     component: resolve => require(['../components/views/UserEdt.vue'], resolve),
                     meta: { title: '用户信息修改'}
+                },
+                {
+                    path: '/about',
+                    component: resolve => require(['../components/views/About.vue'], resolve),
+                    meta: { title: '作者简介'}
                 }
             ]
             

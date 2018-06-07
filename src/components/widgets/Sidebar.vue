@@ -3,6 +3,7 @@
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
+
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -18,6 +19,7 @@
                         <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
+
             </template>
         </el-menu>
     </div>
@@ -54,13 +56,40 @@
                         title: '用户表格'
                     }
                 ]
+                
             }
         },
         computed:{
+            /*
+            username(){
+                let username = localStorage.getItem('ms_username');
+                if (username == 'bjwdttz') {
+                    return true
+                }
+                else {
+                    return false
+                }
+            },*/
+            
             onRoutes(){
+                
                 return this.$route.path.replace('/','');
             }
         },
+        created() {
+                let username = localStorage.getItem('ms_username');
+                if (username == 'bjwdttz' && this.items.length < 3) {
+                        this.items.push({
+                            icon: 'el-icon-warning',
+                            index: 'usertable',
+                            title: '用户表格'
+                        });
+                }
+                else if (username != 'bjwdttz' && this.items.length == 3){
+                    this.items.splice(2,1);
+                    //console.log(this.items[2].index);
+                }
+            }
     }
 </script>
 

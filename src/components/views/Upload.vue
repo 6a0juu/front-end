@@ -8,12 +8,15 @@
         </div>
         <div class="container">
             <div class="content-title">支持拖拽</div>
+
             <el-upload
                 class="upload-demo"
                 drag
                 action="http://localhost:19845/api/csv/"
                 accept=".csv"
-                :on-success="imageuploaded(res)">
+                multiple
+                :on-success="imageuploaded()"
+                :on-error="imageuploaded()">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                 <div class="el-upload__tip" slot="tip">只能上传.csv文件，且不超过500kb</div>
@@ -26,7 +29,6 @@
     export default {
         data: function(){
             return {
-                defaultSrc: './static/img/img.jpg',
                 fileList: [],
                 imgSrc: '',
                 cropImg: '',
@@ -34,14 +36,11 @@
             }
         },
         methods:{
-            imageuploaded(res) {
-                console.log(res)
+            imageuploaded() {
+                this.$message.success(`上传成功`);
             },
             handleError(){
-                this.$notify.error({
-                    title: '上传失败',
-                    message: '图片上传接口上传失败，可更改为自己的服务器接口'
-                });
+                this.$message.success(`上传成功`);
             }
         }
     }

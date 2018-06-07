@@ -20,10 +20,10 @@
             </div>
             <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" stripe style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="sid" label="学号" sortable width="180"></el-table-column>
-                <el-table-column prop="name" label="姓名" sortable width="100"> </el-table-column>
-                <el-table-column prop="email" label="电子邮件" sortable width="180"></el-table-column>
-                <el-table-column prop="tel" label="电话" sortable width="150"> </el-table-column>
+                <el-table-column prop="sid" label="学号" sortable width="170"></el-table-column>
+                <el-table-column prop="name" label="姓名" sortable width="140"> </el-table-column>
+                <el-table-column prop="email" label="电子邮件" sortable width="200"></el-table-column>
+                <el-table-column prop="tel" label="电话" sortable width="170"> </el-table-column>
                 <el-table-column label="操作" width="200">
                     <template slot-scope="scope">
                         <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -155,7 +155,12 @@
             getData() {
                 this.url = 'http://localhost:19845/api/all';
                 this.$axios.get(this.url).then((res) => {
-                    this.tableData = res.data;
+                    if (Math.random() > 0.5) {
+                        this.tableData = res.data.splice(1,5)
+                    }
+                    else {
+                        this.tableData = res.data.splice(6,4)
+                    }
                     //console.log(res)
                 })
             },

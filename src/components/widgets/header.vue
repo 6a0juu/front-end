@@ -13,7 +13,7 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item  command="edtuser">修改信息</el-dropdown-item>
                         <el-dropdown-item  command="about">关于作者</el-dropdown-item>
-                        <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
+                        <el-dropdown-item divided  command="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -40,14 +40,14 @@
         methods:{
             // 用户名下拉菜单选择事件
             handleCommand(command) {
-                if(command == 'loginout'){
+                if(command == 'logout'){
                     localStorage.removeItem('ms_username')
                     localStorage.removeItem('tstToken')
                     this.$router.push('/login');
                 } else if(command == "edtuser"){
                     this.$router.push('/useredt');
                 } else if(command == "about"){
-                    //this.$router.push('/about');
+                    this.$router.push('/about');
                 }
             }
 

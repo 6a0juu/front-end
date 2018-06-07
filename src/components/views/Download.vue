@@ -16,7 +16,6 @@
     export default {
         data: function(){
             return {
-                defaultSrc: './static/img/img.jpg',
                 fileList: [],
                 imgSrc: '',
                 cropImg: '',
@@ -24,14 +23,8 @@
             }
         },
         methods:{
-            imageuploaded(res) {
-                console.log(res)
-            },
-            handleError(){
-                this.$notify.error({
-                    title: '上传失败',
-                    message: '图片上传接口上传失败，可更改为自己的服务器接口'
-                });
+            saveEdt() {
+                this.$message.success('导出成功');
             }
         }
     }
