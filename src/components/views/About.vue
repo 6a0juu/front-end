@@ -7,8 +7,8 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            综合课设前端：<a href="https://github.com/bjwdttz/front-end" title="综合课设前端">开源地址</a>
-            综合课设后端<a href="https://github.com/bjwdttz/backEnd" title="综合课设后端">开源地址</a>
+            综合课设前端：<a href="https://github.com/bjwdttz/front-end" title="综合课设前端">开源地址</a><br>
+            综合课设后端：<a href="https://github.com/bjwdttz/backEnd" title="综合课设后端">开源地址</a><br>
             作者：bjwdttz@UESTC
         </div>
     </div>
