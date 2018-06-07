@@ -153,7 +153,7 @@
                 this.currentPage = currentPage;
             },
             getData() {
-                this.url = 'http://167.99.170.198:19845/api/all';
+                this.url = 'https://sims-demo/api/all';
                 this.$axios.get(this.url).then((res) => {
                     if (Math.random() > 0.5) {
                         this.tableData = res.data.splice(1,5)
@@ -166,7 +166,7 @@
             },
             search() {
                 this.is_search = true;
-                this.url = 'http://167.99.170.198:19845/api/form';
+                this.url = 'https://sims-demo/api/form';
                 this.$axios.post(this.url, {
                     SID: this.select_sid,
                     Name: this.select_name,
@@ -212,7 +212,7 @@
                 let str = '';
                 //this.del_list = this.del_list.concat(this.multipleSelection);//这里加入删除表
                 for (let i = 0; i < length; i++) {
-                    this.url = 'http://167.99.170.198:19845/api/itemdel';
+                    this.url = 'https://sims-demo.me/api/itemdel';
                     //console.log(this.tableData[this.idx])
                     this.$axios.put(this.url, {
                         SID: this.multipleSelection[i].sid,
@@ -235,7 +235,7 @@
             },
             // 保存编辑
             saveEdit() {
-                this.url = 'http://167.99.170.198:19845/api/item';
+                this.url = 'https://sims-demo.me/api/item';
                 this.$axios.put(this.url, {
                     SID: this.form.sid,
                     Name: this.form.name,
@@ -253,7 +253,7 @@
             },
             // 确定删除
             deleteRow(){
-                this.url = 'http://167.99.170.198:19845/api/itemdel';
+                this.url = 'https://sims-demo.me/api/itemdel';
                 console.log(this.tableData[this.idx])
                 this.$axios.put(this.url, {
                     SID: this.tableData[this.idx].sid,
@@ -273,7 +273,7 @@
                 this.addVisible = true;
             },
             addOne(){
-                this.url = 'http://167.99.170.198:19845/api/item';
+                this.url = 'https://sims-demo.me/api/item';
                 this.$axios.post(this.url, {
                     SID: this.form.sid,
                     Name: this.form.name,
