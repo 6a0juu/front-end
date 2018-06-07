@@ -125,7 +125,7 @@
                 this.currentPage = currentPage;
             },
             getData() {
-                this.url = 'http://localhost:19845/api/user';
+                this.url = 'http://167.99.170.198:19845/api/user';
                 this.$axios.get(this.url).then((res) => {
                     this.tableData = res.data;
                 })
@@ -165,7 +165,7 @@
             },
             // 保存编辑
             saveEdit() {
-                this.url = 'http://localhost:19845/api/user';
+                this.url = 'http://167.99.170.198:19845/api/user';
                 this.$axios.put(this.url, {
                     Usnm: this.form.usnm,
                     Pswd: this.form.pswd
@@ -180,7 +180,7 @@
             },
             // 确定删除
             deleteRow(){
-                this.url = 'http://localhost:19845/api/user';
+                this.url = 'http://167.99.170.198:19845/api/user';
                 this.$axios.delete(this.url + '?Usnm=' + this.this.tableData[this.idx].usnm).then((res) => {
                     this.tableData.splice(this.idx, 1);
                     this.$message.success('删除成功');
@@ -194,7 +194,7 @@
                 this.addVisible = true;
             },
             addOne(){
-                this.url = 'http://localhost:19845/api/user';
+                this.url = 'http://167.99.170.198:19845/api/user';
                 this.$axios.post(this.url, {
                     Usnm: this.form.usnm,
                     Pswd: this.form.pswd

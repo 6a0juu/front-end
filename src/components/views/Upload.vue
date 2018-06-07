@@ -12,7 +12,7 @@
             <el-upload
                 class="upload-demo"
                 drag
-                action="http://localhost:19845/api/csv/"
+                action="http://167.99.170.198:19845/api/csv/"
                 accept=".csv"
                 multiple
                 :on-success="imageuploaded()"
