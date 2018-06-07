@@ -48,7 +48,7 @@
         methods: {
             submitForm(ruleForm) {
                 if (this.radio3 == '登录') {
-                    this.$axios.post('http://localhost:19845/api/login', {
+                    this.$axios.post('http://167.99.170.198:19845/api/login', {
                         Usnm: this.ruleForm.username,
                         Pswd: this.ruleForm.password
                     }).then((res) => {
@@ -66,7 +66,7 @@
                         console.log(error)
                     });
                 } else if (this.radio3 == '注册') {
-                    this.$axios.post('http://localhost:19845/api/user', {
+                    this.$axios.post('http://167.99.170.198:19845/api/user', {
                         Usnm: this.ruleForm.username,
                         Pswd: this.ruleForm.password
                     }).then((res) => {
