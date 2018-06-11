@@ -1,6 +1,8 @@
 # front-end
 
-> Front end of the student information system
+> Front-end of the "Comprehensive" Design
+
+[Online Demo](https://sims-demo.me)
 
 ## Build Setup
 
